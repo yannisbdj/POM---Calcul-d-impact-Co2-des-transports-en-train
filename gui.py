@@ -1,6 +1,5 @@
 import PySimpleGUI as sg
-from itineraire import analyser_itineraires_depart_arrivee, capitales_coordinates
-
+from itineraire import analyser_itineraires_depart_arrivee
 
 layout = [
     [sg.Text('Départ', size=(20, 1)), sg.Text('Nombre de personnes')],
@@ -12,9 +11,7 @@ layout = [
     [sg.Button('Évaluer Itinéraires')]
 ]
 
-
 window = sg.Window('Itinéraire en Train', layout)
-
 
 depart_counter = 1
 destinations = []
@@ -45,15 +42,9 @@ while True:
         resultats = ""
         for i in range(depart_counter):
             depart_cap = values[f'-DEPART{i}-']
-            if depart_cap in capitales_coordinates:
-                depart_coords = capitales_coordinates[depart_cap]
-                for destination in destinations:
-                    if destination in capitales_coordinates:
-                        arrivee_coords = capitales_coordinates[destination]
-                        resultats += f"Analyse de l'itinéraire de {depart_cap} à {destination}:\n"
-                        resultats += analyser_itineraires_depart_arrivee(depart_coords, arrivee_coords) + "\n\n"
-            else:
-                resultats += f"La capitale {depart_cap} n'est pas valide ou n'est pas disponible dans la base de données.\n\n"
+            for destination in destinations:
+                resultats += f"Analyse de l'itinéraire de {depart_cap} à {destination}:\n"
+                resultats += analyser_itineraires_depart_arrivee(depart_cap, destination) + "\n\n"
         
         sg.popup(f"Départs: {depart_values}\nNombre de personnes: {personnes_values}\nDestinations potentielles: {destinations}\n\n{resultats}")
 
